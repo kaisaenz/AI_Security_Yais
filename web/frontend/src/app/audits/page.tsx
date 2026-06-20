@@ -308,8 +308,8 @@ export default function AuditsPage() {
 
               </div>
             </DialogContent>
-          </Dialog>
-        ))}
+        )}
+      </Dialog>
 
       </div>
 
