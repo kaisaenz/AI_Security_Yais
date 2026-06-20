@@ -311,8 +311,6 @@ export default function AuditsPage() {
         )}
       </Dialog>
 
-      </div>
-
       {/* Feed de Noticias Regionales */}
       <div className="grid grid-cols-1 border border-slate-800 rounded-xl overflow-hidden">
         <div className="bg-slate-900 border-b border-slate-800 p-4 flex items-center">
