@@ -11,22 +11,28 @@ export default function LabPage() {
   const [speiStatus, setSpeiStatus] = useState<"online" | "degraded" | "offline">("online");
   const [loading, setLoading] = useState(false);
 
-  const simulateCut = () => {
+  const simulateCut = async () => {
     setLoading(true);
-    setTimeout(() => {
+    try {
+      await fetch("http://localhost:8000/lab/chaos/block_foreign_cloud", { method: "POST" });
       setForeignStatus("offline");
       setSpeiStatus("degraded");
-      setLoading(false);
-    }, 1500);
+    } catch (e) {
+      console.error(e);
+    }
+    setLoading(false);
   };
 
-  const simulateRestore = () => {
+  const simulateRestore = async () => {
     setLoading(true);
-    setTimeout(() => {
+    try {
+      await fetch("http://localhost:8000/lab/chaos/restore_all", { method: "POST" });
       setForeignStatus("online");
       setSpeiStatus("online");
-      setLoading(false);
-    }, 1500);
+    } catch (e) {
+      console.error(e);
+    }
+    setLoading(false);
   };
 
   return (

@@ -1,13 +1,53 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Server, Globe, Database, Building2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Server, Globe, Database, Building2, Search, Loader2 } from "lucide-react";
+import { useState } from "react";
 
 export default function Home() {
+  const [targetDomain, setTargetDomain] = useState("banxico.org.mx");
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanResult, setScanResult] = useState<any>(null);
+
+  const handleScan = async () => {
+    setIsScanning(true);
+    try {
+      const res = await fetch(`http://localhost:8000/api/osint/scan?target=${targetDomain}`, { method: "POST" });
+      const data = await res.json();
+      
+      if (data.scan_id) {
+        const resResult = await fetch(`http://localhost:8000/api/osint/results/${data.scan_id}`);
+        const resultData = await resResult.json();
+        setScanResult(resultData.data);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    setIsScanning(false);
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight mb-2">Reconocimiento OSINT</h1>
-        <p className="text-slate-400">Escaneo pasivo de dependencias de infraestructura gubernamental.</p>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight mb-2">Reconocimiento OSINT</h1>
+          <p className="text-slate-400">Escaneo pasivo de dependencias de infraestructura gubernamental.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <input 
+            type="text" 
+            value={targetDomain}
+            onChange={(e) => setTargetDomain(e.target.value)}
+            className="px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm focus:outline-none focus:border-indigo-500"
+            placeholder="Dominio a analizar..."
+          />
+          <Button onClick={handleScan} disabled={isScanning} className="bg-indigo-600 hover:bg-indigo-700">
+            {isScanning ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Search className="w-4 h-4 mr-2" />}
+            Escanear
+          </Button>
+        </div>
       </div>
 
       {/* Tarjetas de Resumen */}

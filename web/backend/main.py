@@ -40,6 +40,29 @@ def get_osint_results(scan_id: str):
 def get_providers():
     return {"providers": ["AWS", "Azure", "GCP", "Kio Networks", "Telmex", "Cloudflare"]}
 
+# --- Lab State ---
+lab_state = {
+    "foreign_status": "online",
+    "spei_status": "online",
+    "latency": 12
+}
+
+@app.get("/lab/status")
+def get_lab_status():
+    return lab_state
+
+@app.post("/lab/chaos/{action}")
+def run_chaos_action(action: str):
+    if action == "block_foreign_cloud":
+        lab_state["foreign_status"] = "offline"
+        lab_state["spei_status"] = "degraded"
+        lab_state["latency"] = 5000
+    elif action == "restore_all":
+        lab_state["foreign_status"] = "online"
+        lab_state["spei_status"] = "online"
+        lab_state["latency"] = 12
+    return {"status": "success", "action": action, "new_state": lab_state}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
