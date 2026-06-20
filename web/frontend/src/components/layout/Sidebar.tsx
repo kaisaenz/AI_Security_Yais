@@ -11,7 +11,7 @@ export function Sidebar() {
   const navItems = [
     { name: "OSINT Pasivo", path: "/", icon: <LayoutDashboard className="w-5 h-5 mr-3" /> },
     { name: "Amenazas", path: "/threats", icon: <Network className="w-5 h-5 mr-3" /> },
-    { name: "Auditorías IA (LATAM)", path: "/audits", icon: <Database className="w-5 h-5 mr-3" /> },
+    { name: "AI Governance Observatory for Latin America", path: "/audits", icon: <Database className="w-5 h-5 mr-3" /> },
     { name: "Laboratorio Chaos", path: "/lab", icon: <Activity className="w-5 h-5 mr-3" /> },
     { name: "Resiliencia", path: "/reports", icon: <FileText className="w-5 h-5 mr-3" /> },
   ];
