@@ -36,6 +36,13 @@ def get_osint_results(scan_id: str):
         return {"id": scan_id, "status": "completed", "data": scan_results[scan_id]}
     return {"error": "Scan not found", "status": "failed"}
 
+@app.get("/api/osint/latest")
+def get_latest_osint():
+    if scan_results:
+        latest_key = list(scan_results.keys())[-1]
+        return {"data": scan_results[latest_key]}
+    return {"data": None}
+
 @app.get("/api/osint/providers")
 def get_providers():
     return {"providers": ["AWS", "Azure", "GCP", "Kio Networks", "Telmex", "Cloudflare"]}
@@ -57,6 +64,9 @@ def run_chaos_action(action: str):
         lab_state["foreign_status"] = "offline"
         lab_state["spei_status"] = "degraded"
         lab_state["latency"] = 5000
+    elif action == "add_latency":
+        lab_state["latency"] = 5000
+        lab_state["spei_status"] = "degraded"
     elif action == "restore_all":
         lab_state["foreign_status"] = "online"
         lab_state["spei_status"] = "online"

@@ -5,6 +5,10 @@ import { Button } from "@/components/ui/button";
 import { FileText, Download, CheckCircle2 } from "lucide-react";
 
 export default function ReportsPage() {
+  const handleExport = () => {
+    window.print();
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500">
       <div className="flex justify-between items-end">
@@ -15,7 +19,7 @@ export default function ReportsPage() {
           </h1>
           <p className="text-slate-400">Recomendaciones estratégicas y arquitectura híbrida objetivo.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+        <Button onClick={handleExport} className="bg-indigo-600 hover:bg-indigo-700 text-white print:hidden">
           <Download className="w-4 h-4 mr-2" />
           Exportar PDF Ejecutivo
         </Button>

@@ -2,33 +2,37 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Activity, Zap, Play, RotateCcw, AlertTriangle, CheckCircle2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function LabPage() {
   const [foreignStatus, setForeignStatus] = useState<"online" | "offline">("online");
   const [speiStatus, setSpeiStatus] = useState<"online" | "degraded" | "offline">("online");
+  const [latency, setLatency] = useState(12);
   const [loading, setLoading] = useState(false);
 
-  const simulateCut = async () => {
-    setLoading(true);
-    try {
-      await fetch("http://localhost:8000/lab/chaos/block_foreign_cloud", { method: "POST" });
-      setForeignStatus("offline");
-      setSpeiStatus("degraded");
-    } catch (e) {
-      console.error(e);
-    }
-    setLoading(false);
-  };
+  // Poll status from backend
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/lab/status");
+        const data = await res.json();
+        setForeignStatus(data.foreign_status);
+        setSpeiStatus(data.spei_status);
+        setLatency(data.latency);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    const interval = setInterval(fetchStatus, 2000);
+    fetchStatus();
+    return () => clearInterval(interval);
+  }, []);
 
-  const simulateRestore = async () => {
+  const simulateAction = async (action: string) => {
     setLoading(true);
     try {
-      await fetch("http://localhost:8000/lab/chaos/restore_all", { method: "POST" });
-      setForeignStatus("online");
-      setSpeiStatus("online");
+      await fetch(`http://localhost:8000/lab/chaos/${action}`, { method: "POST" });
     } catch (e) {
       console.error(e);
     }
@@ -56,7 +60,7 @@ export default function LabPage() {
             <CardContent className="space-y-4">
               <Button 
                 className="w-full bg-rose-600 hover:bg-rose-700 text-white flex justify-between"
-                onClick={simulateCut}
+                onClick={() => simulateAction("block_foreign_cloud")}
                 disabled={foreignStatus === 'offline' || loading}
               >
                 <span>Cortar Nube Extranjera</span>
@@ -65,7 +69,8 @@ export default function LabPage() {
               <Button 
                 variant="outline"
                 className="w-full border-slate-700 hover:bg-slate-800 flex justify-between"
-                disabled={loading}
+                onClick={() => simulateAction("add_latency")}
+                disabled={latency > 100 || loading}
               >
                 <span>Añadir Latencia (5000ms)</span>
                 <Activity className="w-4 h-4 ml-2" />
@@ -74,8 +79,8 @@ export default function LabPage() {
               <Button 
                 variant="secondary"
                 className="w-full bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600/30 flex justify-between"
-                onClick={simulateRestore}
-                disabled={foreignStatus === 'online' || loading}
+                onClick={() => simulateAction("restore_all")}
+                disabled={(foreignStatus === 'online' && latency === 12) || loading}
               >
                 <span>Restaurar Servicios</span>
                 <RotateCcw className="w-4 h-4 ml-2" />

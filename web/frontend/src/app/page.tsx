@@ -28,6 +28,11 @@ export default function Home() {
     setIsScanning(false);
   };
 
+  const hasData = scanResult !== null;
+  const foreignPercentage = hasData ? scanResult.foreign_dependency_percentage.toFixed(0) : "68";
+  const numIps = hasData ? scanResult.infrastructure.length : 142;
+  const riskScore = hasData ? scanResult.risk_score : 75;
+
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -54,12 +59,12 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-slate-300">Total Dominios Analizados</CardTitle>
+            <CardTitle className="text-sm font-medium text-slate-300">Nodos Descubiertos (IPs)</CardTitle>
             <Globe className="w-4 h-4 text-indigo-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">142</div>
-            <p className="text-xs text-slate-500 mt-1">SPEI, SAT, IMSS</p>
+            <div className="text-2xl font-bold">{numIps}</div>
+            <p className="text-xs text-slate-500 mt-1">Asociados a {targetDomain}</p>
           </CardContent>
         </Card>
         
@@ -69,19 +74,19 @@ export default function Home() {
             <Server className="w-4 h-4 text-rose-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-rose-400">68%</div>
+            <div className="text-2xl font-bold text-rose-400">{foreignPercentage}%</div>
             <p className="text-xs text-slate-500 mt-1">Nodos alojados fuera del país</p>
           </CardContent>
         </Card>
 
         <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-slate-300">Proveedores Detectados</CardTitle>
-            <Building2 className="w-4 h-4 text-emerald-400" />
+            <CardTitle className="text-sm font-medium text-slate-300">Score de Riesgo</CardTitle>
+            <Building2 className="w-4 h-4 text-amber-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">12</div>
-            <p className="text-xs text-slate-500 mt-1">AWS, Azure, GCP, Kio...</p>
+            <div className="text-2xl font-bold">{riskScore}/100</div>
+            <p className="text-xs text-slate-500 mt-1">Basado en alojamiento externo</p>
           </CardContent>
         </Card>
 
@@ -91,53 +96,48 @@ export default function Home() {
             <Database className="w-4 h-4 text-amber-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-amber-400">Alto</div>
-            <p className="text-xs text-slate-500 mt-1">Posible fuga de datos sensibles</p>
+            <div className={`text-2xl font-bold ${Number(foreignPercentage) > 50 ? 'text-amber-400' : 'text-emerald-400'}`}>
+              {Number(foreignPercentage) > 50 ? 'Alto' : 'Bajo'}
+            </div>
+            <p className="text-xs text-slate-500 mt-1">Posible transferencia transfronteriza</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Detalles por Entidad */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-        {[
-          { name: "SPEI (Banxico)", status: "Crítico", foreign: "75%", providers: ["AWS", "Akamai"] },
-          { name: "SAT", status: "Moderado", foreign: "45%", providers: ["Azure", "Kio Networks"] },
-          { name: "IMSS", status: "Alto", foreign: "60%", providers: ["AWS", "GCP", "Telmex"] }
-        ].map((entity) => (
-          <Card key={entity.name} className="bg-slate-900/30 border-slate-800 hover:bg-slate-900/50 transition-colors cursor-pointer group">
-            <CardHeader>
-              <CardTitle className="flex justify-between items-center">
-                <span>{entity.name}</span>
-                <Badge variant={entity.status === 'Crítico' ? 'destructive' : entity.status === 'Alto' ? 'default' : 'secondary'} className="bg-rose-500/10 text-rose-400 hover:bg-rose-500/20">
-                  {entity.status}
-                </Badge>
-              </CardTitle>
-              <CardDescription>Resumen de infraestructura</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <div className="flex justify-between text-sm mb-1 text-slate-400">
-                  <span>Dependencia Extranjera</span>
-                  <span className="font-medium text-slate-200">{entity.foreign}</span>
-                </div>
-                <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
-                  <div className="h-full bg-indigo-500 rounded-full" style={{ width: entity.foreign }}></div>
-                </div>
-              </div>
-              <div className="text-sm">
-                <span className="text-slate-500 block mb-1">Proveedores principales:</span>
-                <div className="flex flex-wrap gap-2">
-                  {entity.providers.map(p => (
-                    <span key={p} className="px-2 py-1 bg-slate-800 text-slate-300 rounded text-xs">
-                      {p}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {/* Detalles del Escaneo */}
+      {hasData && (
+        <div className="mt-8">
+          <h2 className="text-xl font-bold mb-4">Detalle de Nodos (Infraestructura Detectada)</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {scanResult.infrastructure.map((node: any, idx: number) => (
+              <Card key={idx} className="bg-slate-900/30 border-slate-800">
+                <CardHeader>
+                  <CardTitle className="flex justify-between items-center text-lg">
+                    <span>{node.ip}</span>
+                    <Badge variant={node.is_foreign ? 'destructive' : 'default'} className={node.is_foreign ? 'bg-rose-500/10 text-rose-400 hover:bg-rose-500/20' : 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'}>
+                      {node.is_foreign ? 'Extranjero' : 'Nacional/Local'}
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-500">Proveedor (ISP):</span>
+                    <span className="text-slate-200">{node.isp}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-500">País:</span>
+                    <span className="text-slate-200">{node.country}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-500">ASN:</span>
+                    <span className="text-slate-200">{node.asn}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
