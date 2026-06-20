@@ -1,9 +1,16 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Shield, BookOpen, AlertCircle, CheckCircle2, Gavel, Scale, Lock, Search, RefreshCw, GitCommit, MapPin, Radio, Cpu, Network, TrendingUp, Newspaper } from "lucide-react";
 import { useState } from "react";
+import dynamic from "next/dynamic";
+
+// Dynamically import the map to avoid SSR 'window is not defined' error
+const GeopoliticsMap = dynamic(() => import("../../components/map/GeopoliticsMap"), {
+  ssr: false,
+  loading: () => <div className="w-full h-full flex items-center justify-center bg-slate-950 text-indigo-500 font-mono text-sm animate-pulse">Iniciando Cartografía Satelital...</div>
+});
 
 // Expanded Simulated LatAm AI Policy & Market Data
 const policyData = [
@@ -13,7 +20,7 @@ const policyData = [
     status: "Avanzado",
     framework: "Proyecto de Ley 2338/2023",
     lastUpdated: "12 May 2024",
-    coords: { top: "50%", left: "65%" },
+    lat: -14.235, lng: -51.925,
     aiOverview: "Brasil es el mercado de IA más grande de América Latina, concentrando más del 40% de las startups de IA en la región. El gobierno está impulsando una estrategia nacional enfocada en la IA para la agricultura y el sector público.",
     marketData: { adoption: "Alta (65% empresas grandes)", investment: "$850M USD (2023)", institutions: ["C4AI (Centro de IA)", "Universidad de São Paulo", "Serpro"] },
     dimensions: {
@@ -35,7 +42,7 @@ const policyData = [
     status: "Avanzado",
     framework: "Política Nacional de IA & Boletín 16584-19",
     lastUpdated: "03 Abr 2024",
-    coords: { top: "80%", left: "28%" },
+    lat: -35.675, lng: -71.543,
     aiOverview: "Pionero en infraestructura digital y 5G. Chile destaca por su 'Política Nacional de IA' actualizada en 2023, con fuerte enfoque en ética, impacto en el empleo y uso de IA en la minería (cobre y litio).",
     marketData: { adoption: "Media-Alta (45%)", investment: "$210M USD (2023)", institutions: ["Cenia", "Ministerio de Ciencia", "Universidad de Chile"] },
     dimensions: {
@@ -57,7 +64,7 @@ const policyData = [
     status: "Intermedio",
     framework: "Recomendaciones Éticas & Proyectos Múltiples",
     lastUpdated: "10 Feb 2024",
-    coords: { top: "75%", left: "40%" },
+    lat: -38.416, lng: -63.616,
     aiOverview: "Argentina posee un ecosistema de talento técnico excepcional y varios unicornios tecnológicos. Su enfoque regulatorio ha sido reactivo, centrándose más en la ética que en leyes punitivas. Gran hub de desarrollo de software.",
     marketData: { adoption: "Media (38%)", investment: "$180M USD (2023)", institutions: ["Ministerio de Innovación", "Fundación Sadosky", "CONICET"] },
     dimensions: {
@@ -78,7 +85,7 @@ const policyData = [
     status: "Intermedio",
     framework: "Marco Ético para la Inteligencia Artificial",
     lastUpdated: "25 Ene 2024",
-    coords: { top: "35%", left: "28%" },
+    lat: 4.570, lng: -74.297,
     aiOverview: "El gobierno de Colombia fue uno de los primeros en emitir un Marco Ético. Medellín se posiciona fuertemente como un hub de Cuarta Revolución Industrial impulsado por el Foro Económico Mundial.",
     marketData: { adoption: "Media (42%)", investment: "$150M USD (2023)", institutions: ["Centro para la Cuarta Revolución", "MinTIC"] },
     dimensions: {
@@ -99,7 +106,7 @@ const policyData = [
     status: "Intermedio",
     framework: "Ley Nº 31814 (Promoción de IA)",
     lastUpdated: "05 Jul 2023",
-    coords: { top: "45%", left: "23%" },
+    lat: -9.19, lng: -75.015,
     aiOverview: "Perú dio la sorpresa en 2023 al aprobar rápidamente una 'Ley de Promoción de IA'. El ecosistema es emergente, enfocado en fintech, agricultura y minería automatizada.",
     marketData: { adoption: "Baja (22%)", investment: "$45M USD (2023)", institutions: ["Secretaría de Gobierno Digital (PCM)"] },
     dimensions: {
@@ -120,7 +127,7 @@ const policyData = [
     status: "Inicial",
     framework: "Iniciativas fragmentadas en Senado",
     lastUpdated: "20 Mar 2024",
-    coords: { top: "20%", left: "15%" },
+    lat: 23.634, lng: -102.552,
     aiOverview: "A pesar de tener el segundo mercado de TI más grande y gran cercanía con EE.UU., México carece de una estrategia nacional centralizada. El sector privado (Fintech y E-commerce) lidera la adopción de IA de manera autónoma.",
     marketData: { adoption: "Media (40%)", investment: "$320M USD (2023)", institutions: ["IA2030Mx", "INAI"] },
     dimensions: {
@@ -148,6 +155,7 @@ const regionalNews = [
 
 export default function AuditsPage() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [selectedCountryId, setSelectedCountryId] = useState<string | null>(null);
 
   const getStatusColor = (status: string) => {
     if (["Fuerte", "Alta", "Establecido", "Avanzado"].includes(status)) return "text-emerald-400 bg-emerald-500/10 border-emerald-500/30";
@@ -160,6 +168,8 @@ export default function AuditsPage() {
     if (status === "Intermedio") return "shadow-[0_0_15px_rgba(245,158,11,0.5)] bg-amber-500";
     return "shadow-[0_0_15px_rgba(244,63,94,0.5)] bg-rose-500";
   };
+
+  const selectedCountry = policyData.find(c => c.id === selectedCountryId);
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500 pb-10">
@@ -182,57 +192,36 @@ export default function AuditsPage() {
         </div>
       </div>
 
-      {/* Mapa Interactivo */}
-      <div className="relative w-full aspect-[16/9] md:aspect-[21/9] bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
+      {/* Mapa Interactivo Leaflet Real */}
+      <div className="relative w-full h-[50vh] min-h-[400px] md:h-[60vh] bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-2xl z-0">
+        <GeopoliticsMap 
+          policyData={policyData} 
+          onMarkerClick={(id) => {
+            setSelectedCountryId(id);
+            setActiveTab("overview");
+          }} 
+        />
         
-        {/* Fondo Abstracto de Mapa (Grid + Líneas Tácticas) */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-        
-        {/* SVG Silueta de LatAm Simplificada para contexto */}
-        <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid slice">
-          <path d="M 150 100 L 250 120 L 300 200 L 350 220 L 400 300 L 450 350 L 550 400 L 650 300 L 700 200 L 600 150 L 500 120 L 450 180 Z" fill="none" stroke="#6366f1" strokeWidth="2" strokeDasharray="5,5" />
-          <path d="M 300 200 L 280 250 L 300 350 L 320 450 L 280 480" fill="none" stroke="#6366f1" strokeWidth="2" strokeDasharray="5,5" />
-        </svg>
-
-        {/* Coordenadas HUD */}
-        <div className="absolute top-4 left-4 font-mono text-[10px] text-slate-500 pointer-events-none">
+        {/* Coordenadas HUD Overlay */}
+        <div className="absolute top-4 left-4 font-mono text-[10px] text-slate-500 pointer-events-none z-[1000] bg-slate-950/80 px-2 py-1 rounded border border-slate-800 backdrop-blur-sm">
           <div>SYS.MAP.LATAM.01 // {policyData.length} NODOS ACTIVOS</div>
         </div>
+      </div>
 
-        {/* Puntos de Información (Nodos) */}
-        {policyData.map((country) => (
-          <Dialog key={country.id}>
-            <DialogTrigger asChild>
-              <button 
-                className="absolute flex flex-col items-center justify-center group transform -translate-x-1/2 -translate-y-1/2 cursor-pointer z-10"
-                style={{ top: country.coords.top, left: country.coords.left }}
-                onClick={() => setActiveTab("overview")}
-              >
-                {/* Ping Animation */}
-                <span className="relative flex h-6 w-6 items-center justify-center">
-                  <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-40 ${getStatusGlow(country.status)}`}></span>
-                  <span className={`relative inline-flex rounded-full h-3 w-3 ${getStatusGlow(country.status)}`}></span>
-                </span>
-                
-                {/* Etiqueta del País en el Mapa */}
-                <div className="mt-2 bg-slate-900/80 backdrop-blur-sm border border-slate-700 px-2 py-1 rounded text-[10px] font-mono text-slate-300 opacity-80 group-hover:opacity-100 group-hover:border-indigo-500 transition-all">
-                  [{country.id}] {country.country}
-                </div>
-              </button>
-            </DialogTrigger>
-
-            {/* Ventana de Expediente (Modal Completo) */}
+      {/* Dialog renderizado condicionalmente cuando se selecciona un país en el mapa */}
+      <Dialog open={!!selectedCountryId} onOpenChange={(open) => !open && setSelectedCountryId(null)}>
+        {selectedCountry && (
             <DialogContent className="bg-slate-950 border-slate-800 text-slate-200 w-[95vw] sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px] font-sans p-0 overflow-hidden shadow-2xl">
               <DialogHeader className="bg-slate-900 border-b border-slate-800 p-6 pb-0">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                   <div>
                     <DialogTitle className="text-2xl md:text-3xl font-bold flex items-center text-slate-100">
                       <MapPin className="w-6 h-6 mr-2 text-indigo-500" />
-                      Expediente IA: {country.country}
+                      Expediente IA: {selectedCountry.country}
                     </DialogTitle>
                   </div>
-                  <Badge variant="outline" className={`${getStatusColor(country.status)} px-4 py-1.5 font-mono uppercase tracking-widest shadow-sm w-fit`}>
-                    Marco: {country.status}
+                  <Badge variant="outline" className={`${getStatusColor(selectedCountry.status)} px-4 py-1.5 font-mono uppercase tracking-widest shadow-sm w-fit`}>
+                    Marco: {selectedCountry.status}
                   </Badge>
                 </div>
                 
@@ -251,22 +240,22 @@ export default function AuditsPage() {
                   <div className="space-y-6 animate-in fade-in">
                     <div>
                       <h3 className="text-lg font-semibold text-slate-300 flex items-center mb-3"><BookOpen className="w-5 h-5 mr-2 text-indigo-400" /> Resumen del Ecosistema</h3>
-                      <p className="text-sm md:text-base text-slate-400 leading-relaxed bg-slate-900/40 p-5 rounded-lg border border-slate-800 shadow-inner">{country.aiOverview}</p>
+                      <p className="text-sm md:text-base text-slate-400 leading-relaxed bg-slate-900/40 p-5 rounded-lg border border-slate-800 shadow-inner">{selectedCountry.aiOverview}</p>
                     </div>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-lg flex flex-col justify-center shadow-sm">
                         <div className="flex items-center text-indigo-400 mb-2 text-sm font-medium"><TrendingUp className="w-4 h-4 mr-2"/> Tasa de Adopción</div>
-                        <span className="text-lg md:text-xl font-bold text-slate-200 leading-tight">{country.marketData.adoption}</span>
+                        <span className="text-lg md:text-xl font-bold text-slate-200 leading-tight">{selectedCountry.marketData.adoption}</span>
                       </div>
                       <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-lg flex flex-col justify-center shadow-sm">
                         <div className="flex items-center text-indigo-400 mb-2 text-sm font-medium"><Network className="w-4 h-4 mr-2"/> Inversión Reportada</div>
-                        <span className="text-lg md:text-xl font-bold text-slate-200 leading-tight">{country.marketData.investment}</span>
+                        <span className="text-lg md:text-xl font-bold text-slate-200 leading-tight">{selectedCountry.marketData.investment}</span>
                       </div>
                       <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-lg flex flex-col justify-center shadow-sm">
                         <div className="flex items-center text-indigo-400 mb-3 text-sm font-medium"><Cpu className="w-4 h-4 mr-2"/> Instituciones Clave</div>
                         <ul className="text-sm text-slate-300 space-y-1.5">
-                          {country.marketData.institutions.map((inst, i) => <li key={i} className="truncate" title={inst}>• {inst}</li>)}
+                          {selectedCountry.marketData.institutions.map((inst, i) => <li key={i} className="truncate" title={inst}>• {inst}</li>)}
                         </ul>
                       </div>
                     </div>
@@ -278,10 +267,10 @@ export default function AuditsPage() {
                   <div className="space-y-6 animate-in fade-in">
                     <div className="bg-indigo-950/20 border border-indigo-900/50 p-4 rounded-lg text-sm text-indigo-200 flex items-center shadow-sm">
                       <Gavel className="w-5 h-5 mr-3" /> 
-                      <span className="font-semibold mr-2">Ley Principal:</span> {country.framework}
+                      <span className="font-semibold mr-2">Ley Principal:</span> {selectedCountry.framework}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {Object.entries(country.dimensions).map(([key, dim]: [string, any]) => {
+                      {Object.entries(selectedCountry.dimensions).map(([key, dim]: [string, any]) => {
                         const titles: any = { privacy: "Privacidad de Datos", transparency: "Transparencia Algorítmica", liability: "Resp. Civil y Daños", generative: "IA Generativa", body: "Ente Regulador" };
                         return (
                           <div key={key} className="bg-slate-900/60 border border-slate-800 rounded-lg p-4 shadow-sm hover:border-slate-700 transition-colors">
@@ -304,7 +293,7 @@ export default function AuditsPage() {
                       <Radio className="w-4 h-4 mr-2" /> Historial Registrado
                     </h3>
                     <div className="relative pl-6 border-l-2 border-indigo-500/30 space-y-8 ml-2">
-                      {country.changelog.map((log, i) => (
+                      {selectedCountry.changelog.map((log, i) => (
                         <div key={i} className="relative">
                           <div className="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-slate-950 border-2 border-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></div>
                           <span className="text-xs font-mono text-indigo-400 block mb-2">{log.date}</span>
