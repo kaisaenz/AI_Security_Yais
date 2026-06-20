@@ -61,18 +61,39 @@ export default function Home() {
           <h1 className="text-3xl font-bold tracking-tight mb-2">Reconocimiento OSINT</h1>
           <p className="text-slate-400">Escaneo pasivo de dependencias de infraestructura y vectores de ataque.</p>
         </div>
-        <div className="flex items-center gap-2">
-          <input 
-            type="text" 
-            value={targetDomain}
-            onChange={(e) => setTargetDomain(e.target.value)}
-            className="px-4 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm focus:outline-none focus:border-indigo-500 w-64"
-            placeholder="Dominio a analizar..."
-          />
-          <Button onClick={handleScan} disabled={isScanning} className="bg-indigo-600 hover:bg-indigo-700 w-32">
-            {isScanning ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Search className="w-4 h-4 mr-2" />}
-            Escanear
-          </Button>
+        <div className="flex flex-col items-end gap-3">
+          <div className="flex items-center gap-2">
+            <input 
+              type="text" 
+              value={targetDomain}
+              onChange={(e) => setTargetDomain(e.target.value)}
+              className="px-4 py-2 bg-slate-900 border border-slate-700 rounded-md text-sm focus:outline-none focus:border-indigo-500 w-64"
+              placeholder="Dominio a analizar..."
+            />
+            <Button onClick={handleScan} disabled={isScanning} className="bg-indigo-600 hover:bg-indigo-700 w-32">
+              {isScanning ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Search className="w-4 h-4 mr-2" />}
+              Escanear
+            </Button>
+          </div>
+          {/* Opciones de escaneo */}
+          <div className="flex gap-4 text-xs text-slate-400 mr-2">
+            <label className="flex items-center gap-1.5 cursor-pointer hover:text-slate-200 transition-colors">
+              <input type="checkbox" className="accent-indigo-500" defaultChecked />
+              <span>Subdominios (Brute Force)</span>
+            </label>
+            <label className="flex items-center gap-1.5 cursor-pointer hover:text-slate-200 transition-colors">
+              <input type="checkbox" className="accent-indigo-500" defaultChecked />
+              <span>Escaneo de Puertos</span>
+            </label>
+            <label className="flex items-center gap-1.5 cursor-pointer hover:text-slate-200 transition-colors">
+              <input type="checkbox" className="accent-indigo-500" defaultChecked />
+              <span>Análisis ASN & Geo-IP</span>
+            </label>
+            <label className="flex items-center gap-1.5 cursor-pointer hover:text-slate-200 transition-colors opacity-60">
+              <input type="checkbox" className="accent-indigo-500" disabled />
+              <span>Detección WAF (PRO)</span>
+            </label>
+          </div>
         </div>
       </div>
 
