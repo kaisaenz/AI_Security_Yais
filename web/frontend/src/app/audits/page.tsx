@@ -210,10 +210,12 @@ const policyData = [
 
 // Fake global news feed
 const regionalNews = [
-  { source: "Cenia (Centro Nacional de IA)", title: "Lanzamiento del Índice Latinoamericano de IA (ILIA)", tag: "Reporte Regional" },
-  { source: "Senado Federal Brasil", title: "Acuerdo bilateral Brasil-UE para alineamiento con el AI Act Europeo", tag: "Geopolítica" },
-  { source: "Foro Económico Mundial", title: "Colombia y México lideran foros de ética de IA en español", tag: "Ética" },
-  { source: "Startups LatAm", title: "Inversión semilla en startups de IA generativa se cuadriplica en el cono sur", tag: "Mercado" }
+  { id: "n1", source: "Cenia (Centro Nacional de IA)", title: "Lanzamiento del Índice Latinoamericano de IA (ILIA)", tag: "Reporte Regional", lat: -33.448, lng: -70.669 },
+  { id: "n2", source: "Senado Federal Brasil", title: "Acuerdo bilateral Brasil-UE para alineamiento con el AI Act Europeo", tag: "Geopolítica", lat: -15.826, lng: -47.921 },
+  { id: "n3", source: "Foro Económico Mundial", title: "Colombia lidera foro de ética de IA", tag: "Ética", lat: 4.609, lng: -74.081 },
+  { id: "n4", source: "Startups LatAm", title: "Inversión semilla en startups de IA generativa se cuadriplica", tag: "Mercado", lat: -34.603, lng: -58.381 },
+  { id: "n5", source: "Tecnológico de Monterrey", title: "Apertura del nuevo hub de IA para manufactura avanzada", tag: "Innovación", lat: 25.651, lng: -100.289 },
+  { id: "n6", source: "Agencia EFE", title: "Cumbre de Inteligencia Artificial para monitoreo de la Amazonía", tag: "Medio Ambiente", lat: -3.743, lng: -73.251 }
 ];
 
 export default function AuditsPage() {
@@ -259,6 +261,7 @@ export default function AuditsPage() {
       <div className="relative w-full h-[50vh] min-h-[400px] md:h-[60vh] bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-2xl z-0">
         <GeopoliticsMap 
           policyData={policyData} 
+          newsData={regionalNews}
           onMarkerClick={(id) => {
             setSelectedCountryId(id);
             setActiveTab("overview");

@@ -26,12 +26,30 @@ const createCustomIcon = (status: string) => {
   });
 };
 
+const createNewsIcon = () => {
+  const color = "#06b6d4"; // cyan-500
+  const svgIcon = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-radio">
+      <circle cx="12" cy="12" r="2"></circle>
+      <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48 0a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+    </svg>`;
+
+  return L.divIcon({
+    className: "custom-leaflet-icon",
+    html: `<div style="width: 24px; height: 24px; filter: drop-shadow(0 0 10px ${color}); animation: pulse 2s infinite;">${svgIcon}</div>`,
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -12],
+  });
+};
+
 interface MapProps {
   policyData: any[];
+  newsData?: any[];
   onMarkerClick: (countryId: string) => void;
 }
 
-export default function GeopoliticsMap({ policyData, onMarkerClick }: MapProps) {
+export default function GeopoliticsMap({ policyData, newsData = [], onMarkerClick }: MapProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -60,6 +78,24 @@ export default function GeopoliticsMap({ policyData, onMarkerClick }: MapProps) 
             click: () => onMarkerClick(country.id),
           }}
         >
+        </Marker>
+      ))}
+      
+      {newsData.map((news) => (
+        <Marker 
+          key={news.id} 
+          position={[news.lat, news.lng]} 
+          icon={createNewsIcon()}
+        >
+          <Popup className="custom-popup">
+            <div className="bg-slate-900 text-slate-200 p-2 rounded-lg border border-slate-700 min-w-[200px]">
+              <div className="text-[10px] font-mono text-cyan-400 mb-1 border-b border-slate-700 pb-1 flex justify-between">
+                <span>{news.source}</span>
+                <span className="px-1 bg-cyan-900/50 rounded">{news.tag}</span>
+              </div>
+              <p className="text-sm font-semibold leading-tight">{news.title}</p>
+            </div>
+          </Popup>
         </Marker>
       ))}
     </MapContainer>

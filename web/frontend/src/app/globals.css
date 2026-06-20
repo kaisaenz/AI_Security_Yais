@@ -129,3 +129,24 @@
     @apply font-sans;
   }
 }
+
+/* Custom Leaflet Popup Overrides for Dark Mode */
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: max-content !important;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: #94a3b8;
+  padding: 4px;
+}
+.leaflet-container a.leaflet-popup-close-button:hover {
+  color: #f8fafc;
+}
