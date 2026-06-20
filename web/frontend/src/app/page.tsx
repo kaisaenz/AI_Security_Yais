@@ -29,9 +29,9 @@ export default function Home() {
   };
 
   const hasData = scanResult !== null;
-  const foreignPercentage = hasData ? scanResult.foreign_dependency_percentage.toFixed(0) : "68";
-  const numIps = hasData ? scanResult.infrastructure.length : 142;
-  const riskScore = hasData ? scanResult.risk_score : 75;
+  const foreignPercentage = hasData ? scanResult.foreign_dependency_percentage.toFixed(0) : "0";
+  const numIps = hasData ? scanResult.infrastructure.length : 0;
+  const riskScore = hasData ? scanResult.risk_score : 0;
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500">
@@ -63,8 +63,8 @@ export default function Home() {
             <Globe className="w-4 h-4 text-indigo-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{numIps}</div>
-            <p className="text-xs text-slate-500 mt-1">Asociados a {targetDomain}</p>
+            <div className="text-2xl font-bold">{hasData ? numIps : "-"}</div>
+            <p className="text-xs text-slate-500 mt-1">{hasData ? `Asociados a ${scanResult.domain}` : "Esperando escaneo..."}</p>
           </CardContent>
         </Card>
         
@@ -74,7 +74,7 @@ export default function Home() {
             <Server className="w-4 h-4 text-rose-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-rose-400">{foreignPercentage}%</div>
+            <div className="text-2xl font-bold text-rose-400">{hasData ? `${foreignPercentage}%` : "-"}</div>
             <p className="text-xs text-slate-500 mt-1">Nodos alojados fuera del país</p>
           </CardContent>
         </Card>
@@ -85,7 +85,7 @@ export default function Home() {
             <Building2 className="w-4 h-4 text-amber-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{riskScore}/100</div>
+            <div className="text-2xl font-bold">{hasData ? `${riskScore}/100` : "-"}</div>
             <p className="text-xs text-slate-500 mt-1">Basado en alojamiento externo</p>
           </CardContent>
         </Card>
@@ -96,8 +96,8 @@ export default function Home() {
             <Database className="w-4 h-4 text-amber-400" />
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${Number(foreignPercentage) > 50 ? 'text-amber-400' : 'text-emerald-400'}`}>
-              {Number(foreignPercentage) > 50 ? 'Alto' : 'Bajo'}
+            <div className={`text-2xl font-bold ${hasData && Number(foreignPercentage) > 50 ? 'text-amber-400' : 'text-emerald-400'}`}>
+              {hasData ? (Number(foreignPercentage) > 50 ? 'Alto' : 'Bajo') : "-"}
             </div>
             <p className="text-xs text-slate-500 mt-1">Posible transferencia transfronteriza</p>
           </CardContent>
