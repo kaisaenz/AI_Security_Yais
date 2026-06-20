@@ -41,10 +41,10 @@ export function Sidebar() {
       <div className="p-4 border-t border-slate-800">
         <Dialog>
           <DialogTrigger asChild>
-            <button className="flex items-center text-slate-400 hover:text-slate-200 w-full px-3 py-2 transition-colors">
+            <div role="button" tabIndex={0} className="flex items-center cursor-pointer text-slate-400 hover:text-slate-200 w-full px-3 py-2 transition-colors">
               <Settings className="w-5 h-5 mr-3" />
               Configuración
-            </button>
+            </div>
           </DialogTrigger>
           <DialogContent className="bg-slate-900 border-slate-800 text-slate-200">
             <DialogHeader>
