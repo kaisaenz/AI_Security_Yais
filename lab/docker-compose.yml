@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  # --- Microservicios gubernamentales simulados ---
+  spei-mock:
+    image: python:3.10-slim
+    command: python -m http.server 8001
+    ports:
+      - "8001:8001"
+    networks:
+      - dmz-net
+      - sovereign-net
+
+  sat-mock:
+    image: python:3.10-slim
+    command: python -m http.server 8002
+    ports:
+      - "8002:8002"
+    networks:
+      - dmz-net
+      - sovereign-net
+
+  imss-mock:
+    image: python:3.10-slim
+    command: python -m http.server 8003
+    ports:
+      - "8003:8003"
+    networks:
+      - dmz-net
+      - sovereign-net
+  
+  # --- Nube soberana (local) ---
+  sovereign-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sovereign
+    networks:
+      - sovereign-net
+  
+  # --- Nube extranjera simulada ---
+  foreign-cloud-mock:
+    image: python:3.10-slim
+    command: python -m http.server 8004
+    ports:
+      - "8004:8004"
+    networks:
+      - foreign-net
+  
+  # --- API del laboratorio ---
+  lab-api:
+    image: python:3.10-alpine
+    command: sh -c "echo 'Lab API Running' && sleep infinity"
+    ports:
+      - "8080:8080"
+    networks:
+      - dmz-net
+      - foreign-net
+      - sovereign-net
+
+networks:
+  sovereign-net:
+  foreign-net:
+  dmz-net:
