@@ -53,7 +53,7 @@ services:
     image: python:3.10-alpine
     command: sh -c "echo 'Lab API Running' && sleep infinity"
     ports:
-      - "8080:8080"
+      - "8081:8080"
     networks:
       - dmz-net
       - foreign-net
