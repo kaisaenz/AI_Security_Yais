@@ -1,12 +1,11 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Shield, BookOpen, AlertCircle, CheckCircle2, Gavel, Scale, Lock, Search, RefreshCw, GitCommit, ExternalLink, MapPin, Radio } from "lucide-react";
+import { Shield, BookOpen, AlertCircle, CheckCircle2, Gavel, Scale, Lock, Search, RefreshCw, GitCommit, MapPin, Radio, Cpu, Network, TrendingUp, Newspaper } from "lucide-react";
 import { useState } from "react";
 
-// Expanded Simulated LatAm AI Policy Data
+// Expanded Simulated LatAm AI Policy & Market Data
 const policyData = [
   {
     id: "BR",
@@ -14,7 +13,9 @@ const policyData = [
     status: "Avanzado",
     framework: "Proyecto de Ley 2338/2023",
     lastUpdated: "12 May 2024",
-    coords: { top: "50%", left: "65%" }, // Aprox map position
+    coords: { top: "50%", left: "65%" },
+    aiOverview: "Brasil es el mercado de IA más grande de América Latina, concentrando más del 40% de las startups de IA en la región. El gobierno está impulsando una estrategia nacional enfocada en la IA para la agricultura y el sector público.",
+    marketData: { adoption: "Alta (65% empresas grandes)", investment: "$850M USD (2023)", institutions: ["C4AI (Centro de IA)", "Universidad de São Paulo", "Serpro"] },
     dimensions: {
       privacy: { status: "Fuerte", desc: "Regulaciones estrictas sobre biometría y consentimiento explícito." },
       transparency: { status: "Moderada", desc: "Obligación de explicar decisiones automatizadas de alto riesgo." },
@@ -23,8 +24,9 @@ const policyData = [
       body: { status: "Propuesto", desc: "Autoridad Nacional de Protección de Datos (ANPD) asume roles." }
     },
     changelog: [
-      { date: "2024-05-12", event: "NOTICIA: Senado aprueba enmienda sobre derechos de autor en IA Generativa." },
-      { date: "2023-11-04", event: "Comisión temporal presenta el reporte final del proyecto." }
+      { date: "2024-05-12", event: "Senado aprueba enmienda sobre derechos de autor en IA Generativa." },
+      { date: "2024-02-18", event: "Lanzamiento de modelo fundacional portugués 'Sabiá' por investigadores brasileños." },
+      { date: "2023-11-04", event: "Comisión temporal presenta el reporte final del proyecto regulatorio." }
     ]
   },
   {
@@ -34,6 +36,8 @@ const policyData = [
     framework: "Política Nacional de IA & Boletín 16584-19",
     lastUpdated: "03 Abr 2024",
     coords: { top: "80%", left: "28%" },
+    aiOverview: "Pionero en infraestructura digital y 5G. Chile destaca por su 'Política Nacional de IA' actualizada en 2023, con fuerte enfoque en ética, impacto en el empleo y uso de IA en la minería (cobre y litio).",
+    marketData: { adoption: "Media-Alta (45%)", investment: "$210M USD (2023)", institutions: ["Cenia", "Ministerio de Ciencia", "Universidad de Chile"] },
     dimensions: {
       privacy: { status: "Fuerte", desc: "Ley de Protección de Datos Personales protege datos de entrenamiento." },
       transparency: { status: "Alta", desc: "Derecho ciudadano a exigir intervención humana en decisiones algorítmicas." },
@@ -42,8 +46,51 @@ const policyData = [
       body: { status: "Establecido", desc: "Comisión Interministerial para Políticas de IA." }
     },
     changelog: [
-      { date: "2024-04-03", event: "NOTICIA: Ingresa el Boletín 16584-19 al Congreso para regular sistemas de IA." },
-      { date: "2023-10-15", event: "Actualización oficial de la Política Nacional de Inteligencia Artificial." }
+      { date: "2024-04-03", event: "Ingresa el Boletín 16584-19 al Congreso para regular sistemas de IA." },
+      { date: "2023-10-15", event: "Actualización oficial de la Política Nacional de Inteligencia Artificial." },
+      { date: "2023-08-02", event: "Cenia publica el primer Índice Latinoamericano de Inteligencia Artificial (ILIA)." }
+    ]
+  },
+  {
+    id: "AR",
+    country: "Argentina",
+    status: "Intermedio",
+    framework: "Recomendaciones Éticas & Proyectos Múltiples",
+    lastUpdated: "10 Feb 2024",
+    coords: { top: "75%", left: "40%" },
+    aiOverview: "Argentina posee un ecosistema de talento técnico excepcional y varios unicornios tecnológicos. Su enfoque regulatorio ha sido reactivo, centrándose más en la ética que en leyes punitivas. Gran hub de desarrollo de software.",
+    marketData: { adoption: "Media (38%)", investment: "$180M USD (2023)", institutions: ["Ministerio de Innovación", "Fundación Sadosky", "CONICET"] },
+    dimensions: {
+      privacy: { status: "Fuerte", desc: "Ley 25.326 de Protección de Datos en proceso de modernización." },
+      transparency: { status: "Básica", desc: "Guías éticas publicadas, sin peso de ley firme." },
+      liability: { status: "Nula", desc: "Sin marco para IA, se recurre al derecho civil tradicional." },
+      generative: { status: "Básica", desc: "Proyectos de ley sobre deepfakes en discusión tras elecciones." },
+      body: { status: "Inexistente", desc: "Diferentes agencias compiten por la jurisdicción." }
+    },
+    changelog: [
+      { date: "2024-02-10", event: "Debates en el congreso sobre el uso de deepfakes en campañas políticas." },
+      { date: "2023-06-02", event: "Publicación de manuales de ética algorítmica por la Subsecretaría de TI." }
+    ]
+  },
+  {
+    id: "CO",
+    country: "Colombia",
+    status: "Intermedio",
+    framework: "Marco Ético para la Inteligencia Artificial",
+    lastUpdated: "25 Ene 2024",
+    coords: { top: "35%", left: "28%" },
+    aiOverview: "El gobierno de Colombia fue uno de los primeros en emitir un Marco Ético. Medellín se posiciona fuertemente como un hub de Cuarta Revolución Industrial impulsado por el Foro Económico Mundial.",
+    marketData: { adoption: "Media (42%)", investment: "$150M USD (2023)", institutions: ["Centro para la Cuarta Revolución", "MinTIC"] },
+    dimensions: {
+      privacy: { status: "Moderada", desc: "Ley 1581 se aplica, pero sin mención específica a scraping de IA." },
+      transparency: { status: "Moderada", desc: "El sector público tiene directrices de transparencia algorítmica obligatorias." },
+      liability: { status: "Nula", desc: "Vacío legal sobre daños por sistemas autónomos." },
+      generative: { status: "Nula", desc: "No hay iniciativas serias en el parlamento aún." },
+      body: { status: "Establecido", desc: "Comités interinstitucionales bajo el MinTIC." }
+    },
+    changelog: [
+      { date: "2024-01-25", event: "El gobierno lanza la 'Hoja de Ruta' actualizada para la adopción de IA en el Estado." },
+      { date: "2023-09-10", event: "Apertura de nuevos laboratorios de computación en la Universidad Nacional." }
     ]
   },
   {
@@ -53,16 +100,18 @@ const policyData = [
     framework: "Ley Nº 31814 (Promoción de IA)",
     lastUpdated: "05 Jul 2023",
     coords: { top: "45%", left: "23%" },
+    aiOverview: "Perú dio la sorpresa en 2023 al aprobar rápidamente una 'Ley de Promoción de IA'. El ecosistema es emergente, enfocado en fintech, agricultura y minería automatizada.",
+    marketData: { adoption: "Baja (22%)", investment: "$45M USD (2023)", institutions: ["Secretaría de Gobierno Digital (PCM)"] },
     dimensions: {
       privacy: { status: "Moderada", desc: "Se apoya en la Ley de Protección de Datos Personales existente." },
       transparency: { status: "Básica", desc: "Principios generales de transparencia pero sin mecanismos sancionadores." },
-      liability: { status: "Básica", desc: "Aún no se define un marco de responsabilidad civil por daños de IA." },
+      liability: { status: "Básica", desc: "Aún no se define un marco de responsabilidad civil." },
       generative: { status: "Nula", desc: "No hay provisiones específicas para IA Generativa." },
-      body: { status: "Establecido", desc: "Secretaría de Gobierno y Transformación Digital (PCM)." }
+      body: { status: "Establecido", desc: "PCM es la autoridad técnica central." }
     },
     changelog: [
-      { date: "2023-07-05", event: "NOTICIA: El Ejecutivo promulga la Ley Nº 31814 (Ley que promueve el uso de IA)." },
-      { date: "2023-05-15", event: "El Congreso aprueba el dictamen de la ley de IA." }
+      { date: "2023-07-05", event: "El Ejecutivo promulga la Ley Nº 31814 que promueve el uso y desarrollo de IA." },
+      { date: "2023-05-15", event: "El Congreso aprueba el dictamen de la ley de IA por abrumadora mayoría." }
     ]
   },
   {
@@ -72,6 +121,8 @@ const policyData = [
     framework: "Iniciativas fragmentadas en Senado",
     lastUpdated: "20 Mar 2024",
     coords: { top: "20%", left: "15%" },
+    aiOverview: "A pesar de tener el segundo mercado de TI más grande y gran cercanía con EE.UU., México carece de una estrategia nacional centralizada. El sector privado (Fintech y E-commerce) lidera la adopción de IA de manera autónoma.",
+    marketData: { adoption: "Media (40%)", investment: "$320M USD (2023)", institutions: ["IA2030Mx", "INAI"] },
     dimensions: {
       privacy: { status: "Moderada", desc: "INAI lidera recomendaciones, pero sin ley IA específica." },
       transparency: { status: "Nula", desc: "Sin obligación legal de auditorías o explicabilidad algorítmica." },
@@ -80,13 +131,23 @@ const policyData = [
       body: { status: "Inexistente", desc: "No hay un ente regulador centralizado para Inteligencia Artificial." }
     },
     changelog: [
-      { date: "2024-03-20", event: "NOTICIA: Presentan iniciativa en el Senado para criminalizar deepfakes políticos." },
-      { date: "2023-09-12", event: "El INAI publica recomendaciones para desarrolladores de sistemas de IA." }
+      { date: "2024-03-20", event: "Presentan iniciativa en el Senado para criminalizar deepfakes políticos tras polémicas." },
+      { date: "2023-09-12", event: "El INAI publica recomendaciones de privacidad para desarrolladores de IA." },
+      { date: "2023-04-10", event: "Coaliciones privadas lanzan el manifiesto IA2030Mx pidiendo regulación estatal." }
     ]
   }
 ];
 
+// Fake global news feed
+const regionalNews = [
+  { source: "Cenia (Centro Nacional de IA)", title: "Lanzamiento del Índice Latinoamericano de IA (ILIA)", tag: "Reporte Regional" },
+  { source: "Senado Federal Brasil", title: "Acuerdo bilateral Brasil-UE para alineamiento con el AI Act Europeo", tag: "Geopolítica" },
+  { source: "Foro Económico Mundial", title: "Colombia y México lideran foros de ética de IA en español", tag: "Ética" },
+  { source: "Startups LatAm", title: "Inversión semilla en startups de IA generativa se cuadriplica en el cono sur", tag: "Mercado" }
+];
+
 export default function AuditsPage() {
+  const [activeTab, setActiveTab] = useState("overview");
 
   const getStatusColor = (status: string) => {
     if (["Fuerte", "Alta", "Establecido", "Avanzado"].includes(status)) return "text-emerald-400 bg-emerald-500/10 border-emerald-500/30";
@@ -101,22 +162,22 @@ export default function AuditsPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 animate-in fade-in duration-500 pb-10">
+    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500 pb-10">
       
       {/* Header Serio */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight mb-1 flex items-center text-slate-100">
             <Radio className="w-6 h-6 mr-3 text-indigo-500 animate-pulse" />
-            Radar de Gobernanza Geopolítica (IA)
+            Centro de Inteligencia Regional de IA (LATAM)
           </h1>
-          <p className="text-slate-400 max-w-2xl text-sm font-mono uppercase tracking-wider">
-            Sistema de Monitoreo de Leyes y Auditoría Normativa - Región LATAM
+          <p className="text-slate-400 max-w-2xl text-sm font-mono tracking-wider">
+            Monitor consolidado de innovación, marcos regulatorios y eventos geopolíticos sobre Inteligencia Artificial.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="border-indigo-500/50 text-indigo-400 bg-indigo-500/10 font-mono">
-            <RefreshCw className="w-3 h-3 mr-2 animate-spin-slow" /> SAT-LINK ACTIVE
+          <Badge variant="outline" className="border-emerald-500/50 text-emerald-400 bg-emerald-500/10 font-mono">
+            <Network className="w-3 h-3 mr-2" /> ENLACE SEGURO
           </Badge>
         </div>
       </div>
@@ -135,8 +196,7 @@ export default function AuditsPage() {
 
         {/* Coordenadas HUD */}
         <div className="absolute top-4 left-4 font-mono text-[10px] text-slate-500 pointer-events-none">
-          <div>SYS.MAP.LATAM.01</div>
-          <div>COORD: 19.4326° N, 99.1332° W</div>
+          <div>SYS.MAP.LATAM.01 // {policyData.length} NODOS ACTIVOS</div>
         </div>
 
         {/* Puntos de Información (Nodos) */}
@@ -146,6 +206,7 @@ export default function AuditsPage() {
               <button 
                 className="absolute flex flex-col items-center justify-center group transform -translate-x-1/2 -translate-y-1/2 cursor-pointer z-10"
                 style={{ top: country.coords.top, left: country.coords.left }}
+                onClick={() => setActiveTab("overview")}
               >
                 {/* Ping Animation */}
                 <span className="relative flex h-6 w-6 items-center justify-center">
@@ -160,72 +221,99 @@ export default function AuditsPage() {
               </button>
             </DialogTrigger>
 
-            {/* Ventana de Noticias e Información (Modal Serio) */}
-            <DialogContent className="bg-slate-950 border-slate-800 text-slate-200 max-w-3xl font-sans">
-              <DialogHeader className="border-b border-slate-800 pb-4 mb-4">
+            {/* Ventana de Expediente (Modal Completo) */}
+            <DialogContent className="bg-slate-950 border-slate-800 text-slate-200 max-w-4xl font-sans p-0 overflow-hidden">
+              <DialogHeader className="bg-slate-900 border-b border-slate-800 p-6 pb-4">
                 <div className="flex justify-between items-start">
                   <div>
                     <DialogTitle className="text-2xl font-bold flex items-center">
                       <MapPin className="w-5 h-5 mr-2 text-indigo-500" />
-                      Expediente: {country.country}
+                      Expediente IA: {country.country}
                     </DialogTitle>
-                    <p className="text-slate-400 font-mono text-xs mt-2">Marco Legal: {country.framework}</p>
                   </div>
                   <Badge variant="outline" className={`${getStatusColor(country.status)} px-3 py-1 font-mono uppercase tracking-widest`}>
-                    Estado: {country.status}
+                    Marco: {country.status}
                   </Badge>
+                </div>
+                
+                {/* Tabs de Navegación Interna */}
+                <div className="flex gap-4 mt-6 border-b border-slate-800">
+                  <button onClick={() => setActiveTab("overview")} className={`pb-2 text-sm font-medium transition-colors ${activeTab === 'overview' ? 'text-indigo-400 border-b-2 border-indigo-400' : 'text-slate-500 hover:text-slate-300'}`}>Panorama General</button>
+                  <button onClick={() => setActiveTab("legal")} className={`pb-2 text-sm font-medium transition-colors ${activeTab === 'legal' ? 'text-indigo-400 border-b-2 border-indigo-400' : 'text-slate-500 hover:text-slate-300'}`}>Auditoría Legal</button>
+                  <button onClick={() => setActiveTab("news")} className={`pb-2 text-sm font-medium transition-colors ${activeTab === 'news' ? 'text-indigo-400 border-b-2 border-indigo-400' : 'text-slate-500 hover:text-slate-300'}`}>Línea de Tiempo</button>
                 </div>
               </DialogHeader>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-6 bg-slate-950 min-h-[350px] max-h-[60vh] overflow-y-auto">
                 
-                {/* Columna Izquierda: Últimas Noticias / Changelog */}
-                <div className="space-y-4">
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-500 flex items-center">
-                    <Radio className="w-4 h-4 mr-2" /> Feed de Noticias Oficiales
-                  </h3>
-                  <div className="bg-slate-900 border border-slate-800 rounded-lg p-4 space-y-4 h-[250px] overflow-y-auto">
-                    {country.changelog.map((log, i) => (
-                      <div key={i} className="relative pl-4 border-l-2 border-indigo-500/30">
-                        <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_5px_rgba(99,102,241,0.8)]"></div>
-                        <span className="text-[10px] font-mono text-indigo-400 block mb-1">{log.date}</span>
-                        <p className={`text-sm ${log.event.includes('NOTICIA:') ? 'text-slate-100 font-medium' : 'text-slate-400'}`}>
-                          {log.event.replace('NOTICIA:', '')}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Columna Derecha: Auditoría de Dimensiones */}
-                <div className="space-y-4">
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-500 flex items-center">
-                    <Scale className="w-4 h-4 mr-2" /> Auditoría de Dimensiones
-                  </h3>
-                  <div className="space-y-2 max-h-[250px] overflow-y-auto pr-2">
+                {/* TAB: PANORAMA GENERAL */}
+                {activeTab === "overview" && (
+                  <div className="space-y-6 animate-in fade-in">
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-300 flex items-center mb-3"><BookOpen className="w-4 h-4 mr-2" /> Resumen del Ecosistema</h3>
+                      <p className="text-sm text-slate-400 leading-relaxed bg-slate-900/50 p-4 rounded-lg border border-slate-800">{country.aiOverview}</p>
+                    </div>
                     
-                    {Object.entries(country.dimensions).map(([key, dim]: [string, any]) => {
-                      const titles: any = { privacy: "Privacidad", transparency: "Transparencia", liability: "Responsabilidad", generative: "IA Generativa", body: "Regulador" };
-                      return (
-                        <div key={key} className="bg-slate-900/50 border border-slate-800 rounded p-2 flex flex-col gap-1">
-                          <div className="flex justify-between items-center">
-                            <span className="text-xs font-medium text-slate-300">{titles[key]}</span>
-                            <span className={`text-[10px] px-2 py-0.5 rounded border ${getStatusColor(dim.status)}`}>
-                              {dim.status}
-                            </span>
-                          </div>
-                          <p className="text-[11px] text-slate-500">{dim.desc}</p>
-                        </div>
-                      );
-                    })}
-
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="bg-slate-900 border border-slate-800 p-4 rounded-lg">
+                        <div className="flex items-center text-indigo-400 mb-2"><TrendingUp className="w-4 h-4 mr-2"/> Tasa de Adopción</div>
+                        <span className="text-xl font-bold text-slate-200">{country.marketData.adoption}</span>
+                      </div>
+                      <div className="bg-slate-900 border border-slate-800 p-4 rounded-lg">
+                        <div className="flex items-center text-indigo-400 mb-2"><Network className="w-4 h-4 mr-2"/> Inversión (2023)</div>
+                        <span className="text-xl font-bold text-slate-200">{country.marketData.investment}</span>
+                      </div>
+                      <div className="bg-slate-900 border border-slate-800 p-4 rounded-lg">
+                        <div className="flex items-center text-indigo-400 mb-2"><Cpu className="w-4 h-4 mr-2"/> Instituciones Clave</div>
+                        <ul className="text-xs text-slate-300 space-y-1">
+                          {country.marketData.institutions.map((inst, i) => <li key={i}>• {inst}</li>)}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
 
-              </div>
-              
-              <div className="mt-4 pt-4 border-t border-slate-800 flex justify-end">
-                <span className="text-[10px] text-slate-600 font-mono">FIN DEL REPORTE // CENTINELA OSINT</span>
+                {/* TAB: AUDITORIA LEGAL */}
+                {activeTab === "legal" && (
+                  <div className="space-y-4 animate-in fade-in">
+                    <div className="bg-indigo-950/20 border border-indigo-900/50 p-3 rounded text-sm text-indigo-200 flex items-center mb-4">
+                      <Gavel className="w-4 h-4 mr-2" /> Ley Principal Analizada: {country.framework}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {Object.entries(country.dimensions).map(([key, dim]: [string, any]) => {
+                        const titles: any = { privacy: "Privacidad de Datos", transparency: "Transparencia Algorítmica", liability: "Resp. Civil y Daños", generative: "IA Generativa", body: "Ente Regulador" };
+                        return (
+                          <div key={key} className="bg-slate-900/50 border border-slate-800 rounded p-3">
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-sm font-medium text-slate-300">{titles[key]}</span>
+                              <span className={`text-[10px] px-2 py-0.5 rounded border ${getStatusColor(dim.status)}`}>{dim.status}</span>
+                            </div>
+                            <p className="text-xs text-slate-400">{dim.desc}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB: NEWS / CHANGELOG */}
+                {activeTab === "news" && (
+                  <div className="space-y-4 animate-in fade-in">
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-4">Últimos Eventos Registrados</h3>
+                    <div className="relative pl-4 border-l-2 border-indigo-500/30 space-y-6 ml-2">
+                      {country.changelog.map((log, i) => (
+                        <div key={i} className="relative">
+                          <div className="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-slate-950 border-2 border-indigo-500"></div>
+                          <span className="text-[11px] font-mono text-indigo-400 block mb-1">{log.date}</span>
+                          <p className="text-sm text-slate-300 bg-slate-900 border border-slate-800 p-3 rounded-lg shadow-sm">
+                            {log.event}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
               </div>
             </DialogContent>
           </Dialog>
@@ -233,19 +321,24 @@ export default function AuditsPage() {
 
       </div>
 
-      {/* Legend */}
-      <div className="flex justify-center gap-8 border-t border-slate-800 pt-6">
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
-          <span className="text-xs text-slate-400 font-mono uppercase">Marco Avanzado</span>
+      {/* Feed de Noticias Regionales */}
+      <div className="grid grid-cols-1 border border-slate-800 rounded-xl overflow-hidden">
+        <div className="bg-slate-900 border-b border-slate-800 p-4 flex items-center">
+          <Newspaper className="w-5 h-5 mr-2 text-indigo-400" />
+          <h2 className="text-lg font-semibold text-slate-200">Terminal de Noticias Globales IA - LATAM</h2>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span>
-          <span className="text-xs text-slate-400 font-mono uppercase">Marco Intermedio</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]"></span>
-          <span className="text-xs text-slate-400 font-mono uppercase">Vacío Legal (Riesgo)</span>
+        <div className="bg-slate-950 p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {regionalNews.map((news, i) => (
+              <div key={i} className="flex flex-col space-y-2 p-3 bg-slate-900/50 hover:bg-slate-900 border border-slate-800 rounded-lg cursor-pointer transition-colors group">
+                <Badge variant="outline" className="w-fit text-[10px] border-indigo-500/30 text-indigo-400 bg-indigo-500/10">
+                  {news.tag}
+                </Badge>
+                <p className="text-sm font-medium text-slate-200 group-hover:text-indigo-300 transition-colors">{news.title}</p>
+                <span className="text-xs text-slate-500 mt-auto pt-2">{news.source}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
