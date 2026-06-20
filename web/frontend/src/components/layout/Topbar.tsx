@@ -3,9 +3,6 @@ export function Topbar() {
     <header className="h-16 border-b border-slate-800 bg-slate-950/50 backdrop-blur-xl flex items-center justify-between px-6 z-10 sticky top-0">
       <div className="flex items-center gap-4">
         <h2 className="text-sm font-medium text-slate-300">Análisis de Infraestructura Crítica</h2>
-        <span className="px-2 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-semibold border border-red-500/20">
-          Entorno Demo - No Atacar
-        </span>
       </div>
       <div className="flex items-center gap-4 text-sm text-slate-400">
         <div className="flex items-center gap-2">
