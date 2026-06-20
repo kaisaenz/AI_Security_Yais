@@ -7,7 +7,7 @@ import { Topbar } from "@/components/layout/Topbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ResilienceGov - Análisis de Infraestructura",
+  title: "Centinela - Análisis de Infraestructura",
   description: "Plataforma Educativa de Análisis de Resiliencia de Infraestructura Gubernamental",
 };
 

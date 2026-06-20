@@ -20,7 +20,7 @@ export function Sidebar() {
       <div className="h-16 flex items-center px-6 border-b border-slate-800">
         <ShieldAlert className="w-6 h-6 text-indigo-500 mr-2" />
         <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-          ResilienceGov
+          Centinela
         </span>
       </div>
       <nav className="flex-1 py-6 px-4 space-y-2">

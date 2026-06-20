@@ -1,4 +1,4 @@
-# Manual de Uso: ResilienceGov (Plataforma OSINT & Chaos Lab)
+# Manual de Uso: Centinela (Plataforma OSINT & Chaos Lab)
 
 Este documento detalla el funcionamiento de la plataforma web de demostración para el análisis de resiliencia de infraestructura crítica.
 
