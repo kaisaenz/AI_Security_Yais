@@ -222,51 +222,51 @@ export default function AuditsPage() {
             </DialogTrigger>
 
             {/* Ventana de Expediente (Modal Completo) */}
-            <DialogContent className="bg-slate-950 border-slate-800 text-slate-200 max-w-4xl font-sans p-0 overflow-hidden">
-              <DialogHeader className="bg-slate-900 border-b border-slate-800 p-6 pb-4">
-                <div className="flex justify-between items-start">
+            <DialogContent className="bg-slate-950 border-slate-800 text-slate-200 w-[95vw] sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px] font-sans p-0 overflow-hidden shadow-2xl">
+              <DialogHeader className="bg-slate-900 border-b border-slate-800 p-6 pb-0">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                   <div>
-                    <DialogTitle className="text-2xl font-bold flex items-center">
-                      <MapPin className="w-5 h-5 mr-2 text-indigo-500" />
+                    <DialogTitle className="text-2xl md:text-3xl font-bold flex items-center text-slate-100">
+                      <MapPin className="w-6 h-6 mr-2 text-indigo-500" />
                       Expediente IA: {country.country}
                     </DialogTitle>
                   </div>
-                  <Badge variant="outline" className={`${getStatusColor(country.status)} px-3 py-1 font-mono uppercase tracking-widest`}>
+                  <Badge variant="outline" className={`${getStatusColor(country.status)} px-4 py-1.5 font-mono uppercase tracking-widest shadow-sm w-fit`}>
                     Marco: {country.status}
                   </Badge>
                 </div>
                 
                 {/* Tabs de Navegación Interna */}
-                <div className="flex gap-4 mt-6 border-b border-slate-800">
-                  <button onClick={() => setActiveTab("overview")} className={`pb-2 text-sm font-medium transition-colors ${activeTab === 'overview' ? 'text-indigo-400 border-b-2 border-indigo-400' : 'text-slate-500 hover:text-slate-300'}`}>Panorama General</button>
-                  <button onClick={() => setActiveTab("legal")} className={`pb-2 text-sm font-medium transition-colors ${activeTab === 'legal' ? 'text-indigo-400 border-b-2 border-indigo-400' : 'text-slate-500 hover:text-slate-300'}`}>Auditoría Legal</button>
-                  <button onClick={() => setActiveTab("news")} className={`pb-2 text-sm font-medium transition-colors ${activeTab === 'news' ? 'text-indigo-400 border-b-2 border-indigo-400' : 'text-slate-500 hover:text-slate-300'}`}>Línea de Tiempo</button>
+                <div className="flex gap-6 mt-6 overflow-x-auto scrollbar-hide">
+                  <button onClick={() => setActiveTab("overview")} className={`pb-3 text-sm font-medium transition-colors whitespace-nowrap ${activeTab === 'overview' ? 'text-indigo-400 border-b-2 border-indigo-400' : 'text-slate-500 hover:text-slate-300'}`}>Panorama General</button>
+                  <button onClick={() => setActiveTab("legal")} className={`pb-3 text-sm font-medium transition-colors whitespace-nowrap ${activeTab === 'legal' ? 'text-indigo-400 border-b-2 border-indigo-400' : 'text-slate-500 hover:text-slate-300'}`}>Auditoría Legal</button>
+                  <button onClick={() => setActiveTab("news")} className={`pb-3 text-sm font-medium transition-colors whitespace-nowrap ${activeTab === 'news' ? 'text-indigo-400 border-b-2 border-indigo-400' : 'text-slate-500 hover:text-slate-300'}`}>Línea de Tiempo</button>
                 </div>
               </DialogHeader>
 
-              <div className="p-6 bg-slate-950 min-h-[350px] max-h-[60vh] overflow-y-auto">
+              <div className="p-6 bg-slate-950 min-h-[350px] max-h-[70vh] overflow-y-auto">
                 
                 {/* TAB: PANORAMA GENERAL */}
                 {activeTab === "overview" && (
                   <div className="space-y-6 animate-in fade-in">
                     <div>
-                      <h3 className="text-lg font-semibold text-slate-300 flex items-center mb-3"><BookOpen className="w-4 h-4 mr-2" /> Resumen del Ecosistema</h3>
-                      <p className="text-sm text-slate-400 leading-relaxed bg-slate-900/50 p-4 rounded-lg border border-slate-800">{country.aiOverview}</p>
+                      <h3 className="text-lg font-semibold text-slate-300 flex items-center mb-3"><BookOpen className="w-5 h-5 mr-2 text-indigo-400" /> Resumen del Ecosistema</h3>
+                      <p className="text-sm md:text-base text-slate-400 leading-relaxed bg-slate-900/40 p-5 rounded-lg border border-slate-800 shadow-inner">{country.aiOverview}</p>
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="bg-slate-900 border border-slate-800 p-4 rounded-lg">
-                        <div className="flex items-center text-indigo-400 mb-2"><TrendingUp className="w-4 h-4 mr-2"/> Tasa de Adopción</div>
-                        <span className="text-xl font-bold text-slate-200">{country.marketData.adoption}</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-lg flex flex-col justify-center shadow-sm">
+                        <div className="flex items-center text-indigo-400 mb-2 text-sm font-medium"><TrendingUp className="w-4 h-4 mr-2"/> Tasa de Adopción</div>
+                        <span className="text-lg md:text-xl font-bold text-slate-200 leading-tight">{country.marketData.adoption}</span>
                       </div>
-                      <div className="bg-slate-900 border border-slate-800 p-4 rounded-lg">
-                        <div className="flex items-center text-indigo-400 mb-2"><Network className="w-4 h-4 mr-2"/> Inversión (2023)</div>
-                        <span className="text-xl font-bold text-slate-200">{country.marketData.investment}</span>
+                      <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-lg flex flex-col justify-center shadow-sm">
+                        <div className="flex items-center text-indigo-400 mb-2 text-sm font-medium"><Network className="w-4 h-4 mr-2"/> Inversión Reportada</div>
+                        <span className="text-lg md:text-xl font-bold text-slate-200 leading-tight">{country.marketData.investment}</span>
                       </div>
-                      <div className="bg-slate-900 border border-slate-800 p-4 rounded-lg">
-                        <div className="flex items-center text-indigo-400 mb-2"><Cpu className="w-4 h-4 mr-2"/> Instituciones Clave</div>
-                        <ul className="text-xs text-slate-300 space-y-1">
-                          {country.marketData.institutions.map((inst, i) => <li key={i}>• {inst}</li>)}
+                      <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-lg flex flex-col justify-center shadow-sm">
+                        <div className="flex items-center text-indigo-400 mb-3 text-sm font-medium"><Cpu className="w-4 h-4 mr-2"/> Instituciones Clave</div>
+                        <ul className="text-sm text-slate-300 space-y-1.5">
+                          {country.marketData.institutions.map((inst, i) => <li key={i} className="truncate" title={inst}>• {inst}</li>)}
                         </ul>
                       </div>
                     </div>
@@ -275,20 +275,21 @@ export default function AuditsPage() {
 
                 {/* TAB: AUDITORIA LEGAL */}
                 {activeTab === "legal" && (
-                  <div className="space-y-4 animate-in fade-in">
-                    <div className="bg-indigo-950/20 border border-indigo-900/50 p-3 rounded text-sm text-indigo-200 flex items-center mb-4">
-                      <Gavel className="w-4 h-4 mr-2" /> Ley Principal Analizada: {country.framework}
+                  <div className="space-y-6 animate-in fade-in">
+                    <div className="bg-indigo-950/20 border border-indigo-900/50 p-4 rounded-lg text-sm text-indigo-200 flex items-center shadow-sm">
+                      <Gavel className="w-5 h-5 mr-3" /> 
+                      <span className="font-semibold mr-2">Ley Principal:</span> {country.framework}
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {Object.entries(country.dimensions).map(([key, dim]: [string, any]) => {
                         const titles: any = { privacy: "Privacidad de Datos", transparency: "Transparencia Algorítmica", liability: "Resp. Civil y Daños", generative: "IA Generativa", body: "Ente Regulador" };
                         return (
-                          <div key={key} className="bg-slate-900/50 border border-slate-800 rounded p-3">
-                            <div className="flex justify-between items-center mb-2">
-                              <span className="text-sm font-medium text-slate-300">{titles[key]}</span>
-                              <span className={`text-[10px] px-2 py-0.5 rounded border ${getStatusColor(dim.status)}`}>{dim.status}</span>
+                          <div key={key} className="bg-slate-900/60 border border-slate-800 rounded-lg p-4 shadow-sm hover:border-slate-700 transition-colors">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-3">
+                              <span className="text-sm font-semibold text-slate-200">{titles[key]}</span>
+                              <span className={`text-[10px] px-2.5 py-1 rounded-md border font-medium tracking-wide w-fit ${getStatusColor(dim.status)}`}>{dim.status}</span>
                             </div>
-                            <p className="text-xs text-slate-400">{dim.desc}</p>
+                            <p className="text-sm text-slate-400 leading-relaxed">{dim.desc}</p>
                           </div>
                         );
                       })}
@@ -298,14 +299,16 @@ export default function AuditsPage() {
 
                 {/* TAB: NEWS / CHANGELOG */}
                 {activeTab === "news" && (
-                  <div className="space-y-4 animate-in fade-in">
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-4">Últimos Eventos Registrados</h3>
-                    <div className="relative pl-4 border-l-2 border-indigo-500/30 space-y-6 ml-2">
+                  <div className="space-y-6 animate-in fade-in">
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-slate-500 mb-6 flex items-center">
+                      <Radio className="w-4 h-4 mr-2" /> Historial Registrado
+                    </h3>
+                    <div className="relative pl-6 border-l-2 border-indigo-500/30 space-y-8 ml-2">
                       {country.changelog.map((log, i) => (
                         <div key={i} className="relative">
-                          <div className="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-slate-950 border-2 border-indigo-500"></div>
-                          <span className="text-[11px] font-mono text-indigo-400 block mb-1">{log.date}</span>
-                          <p className="text-sm text-slate-300 bg-slate-900 border border-slate-800 p-3 rounded-lg shadow-sm">
+                          <div className="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-slate-950 border-2 border-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></div>
+                          <span className="text-xs font-mono text-indigo-400 block mb-2">{log.date}</span>
+                          <p className="text-sm md:text-base text-slate-300 bg-slate-900 border border-slate-800 p-4 rounded-lg shadow-sm">
                             {log.event}
                           </p>
                         </div>
