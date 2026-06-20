@@ -218,28 +218,46 @@ export default function Home() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2 pt-0">
-                    <div className="flex justify-between text-xs">
-                      <span className="text-slate-500">Proveedor:</span>
-                      <span className="text-slate-200 font-medium truncate max-w-[120px]" title={node.isp}>{node.isp}</span>
-                    </div>
-                    <div className="flex justify-between text-xs">
-                      <span className="text-slate-500">País:</span>
-                      <span className="text-slate-200 flex items-center">
-                        {node.country}
-                        {node.country === 'United States' && <span className="ml-1 text-sm" title="EE.UU.">🇺🇸</span>}
-                        {node.country === 'Mexico' && <span className="ml-1 text-sm" title="México">🇲🇽</span>}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-xs">
-                      <span className="text-slate-500">ASN:</span>
-                      <span className="text-slate-200">{node.asn}</span>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                      <div className="flex flex-col text-xs">
+                        <span className="text-slate-500">Proveedor</span>
+                        <span className="text-slate-200 font-medium truncate" title={node.isp}>{node.isp}</span>
+                      </div>
+                      <div className="flex flex-col text-xs">
+                        <span className="text-slate-500">País</span>
+                        <span className="text-slate-200 flex items-center">
+                          {node.country}
+                          {node.country === 'United States' && <span className="ml-1 text-sm" title="EE.UU.">🇺🇸</span>}
+                          {node.country === 'Mexico' && <span className="ml-1 text-sm" title="México">🇲🇽</span>}
+                        </span>
+                      </div>
+                      <div className="flex flex-col text-xs">
+                        <span className="text-slate-500">ASN / BGP</span>
+                        <span className="text-slate-200">{node.asn} ({node.bgp})</span>
+                      </div>
+                      <div className="flex flex-col text-xs">
+                        <span className="text-slate-500">Latencia / Ping</span>
+                        <span className={`${node.latency > 100 ? 'text-amber-400' : 'text-emerald-400'}`}>
+                          {node.latency} ms
+                        </span>
+                      </div>
+                      <div className="flex flex-col text-xs col-span-2">
+                        <span className="text-slate-500">OS Fingerprint</span>
+                        <span className="text-slate-300 font-mono text-[10px] bg-slate-950 p-1 rounded border border-slate-800 mt-0.5">{node.os}</span>
+                      </div>
+                      {node.tls !== "N/A" && (
+                        <div className="flex flex-col text-xs col-span-2">
+                          <span className="text-slate-500">Certificado TLS</span>
+                          <span className="text-slate-300 truncate" title={node.tls}>{node.tls}</span>
+                        </div>
+                      )}
                     </div>
                     {node.open_ports && node.open_ports.length > 0 && (
-                      <div className="flex justify-between text-xs pt-2 border-t border-slate-800/50 mt-2">
+                      <div className="flex justify-between items-center text-xs pt-2 border-t border-slate-800/50 mt-2">
                         <span className="text-slate-500">Puertos:</span>
-                        <div className="flex gap-1 flex-wrap justify-end max-w-[120px]">
+                        <div className="flex gap-1 flex-wrap justify-end max-w-[150px]">
                           {node.open_ports.map((port: number) => (
-                            <span key={port} className="text-[10px] bg-slate-950 border border-slate-700 px-1 rounded text-slate-300">
+                            <span key={port} className="text-[10px] bg-slate-950 border border-slate-700 px-1 rounded text-slate-300 font-mono">
                               {port}
                             </span>
                           ))}

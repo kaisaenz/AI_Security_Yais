@@ -58,6 +58,19 @@ def get_simulated_ports(ip: str):
         common_ports.append(random.choice([22, 3389, 8080, 8443, 21]))
     return common_ports
 
+def get_simulated_tech_data(ip: str, open_ports: list):
+    import random
+    os_options = ["Linux 5.4 (Ubuntu)", "Windows Server 2019", "FreeBSD 12.2", "Linux 3.10 (CentOS)", "Debian GNU/Linux 11"]
+    tls_issuers = ["Let's Encrypt Authority X3", "DigiCert Global Root CA", "Amazon", "Sectigo RSA Domain Validation Secure Server CA", "GlobalSign"]
+    
+    has_https = 443 in open_ports or 8443 in open_ports
+    return {
+        "os_fingerprint": random.choice(os_options),
+        "latency_ms": random.randint(12, 185),
+        "tls_issuer": random.choice(tls_issuers) if has_https else "N/A",
+        "bgp_prefix": f"{'.'.join(ip.split('.')[:3])}.0/24"
+    }
+
 def scan_target(target: str):
     domain = target
     records = get_dns_records(domain)
@@ -75,6 +88,8 @@ def scan_target(target: str):
             foreign_count += 1
             
         associated_domain = records['Subdomains'].get(ip, domain)
+        simulated_ports = get_simulated_ports(ip)
+        tech_data = get_simulated_tech_data(ip, simulated_ports)
             
         infrastructure.append({
             "ip": ip,
@@ -83,7 +98,11 @@ def scan_target(target: str):
             "isp": isp,
             "asn": info.get('as', 'Unknown'),
             "is_foreign": is_foreign,
-            "open_ports": get_simulated_ports(ip)
+            "open_ports": simulated_ports,
+            "os": tech_data["os_fingerprint"],
+            "latency": tech_data["latency_ms"],
+            "tls": tech_data["tls_issuer"],
+            "bgp": tech_data["bgp_prefix"]
         })
         
     risk_score = 0
