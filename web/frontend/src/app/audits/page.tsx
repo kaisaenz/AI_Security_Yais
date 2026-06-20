@@ -242,12 +242,12 @@ export default function AuditsPage() {
       {/* Header Serio */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight mb-1 flex items-center text-slate-100">
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-100 flex items-center mb-2">
             <Radio className="w-6 h-6 mr-3 text-indigo-500 animate-pulse" />
-            Centro de Inteligencia Regional de IA (LATAM)
+            AI Governance Observatory
           </h1>
           <p className="text-slate-400 max-w-2xl text-sm font-mono tracking-wider">
-            Monitor consolidado de innovación, marcos regulatorios y eventos geopolíticos sobre Inteligencia Artificial.
+            Consolidated monitor of innovation, regulatory frameworks, and geopolitical events regarding Artificial Intelligence.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -270,7 +270,7 @@ export default function AuditsPage() {
         
         {/* Coordenadas HUD Overlay */}
         <div className="absolute top-4 left-4 font-mono text-[10px] text-slate-500 pointer-events-none z-[1000] bg-slate-950/80 px-2 py-1 rounded border border-slate-800 backdrop-blur-sm">
-          <div>SYS.MAP.LATAM.01 // {policyData.length} NODOS ACTIVOS</div>
+          <div>SYS.MAP.OBSERVATORY.01 // {policyData.length} NODOS ACTIVOS</div>
         </div>
       </div>
 
@@ -378,10 +378,10 @@ export default function AuditsPage() {
       </Dialog>
 
       {/* Feed de Noticias Regionales */}
-      <div className="grid grid-cols-1 border border-slate-800 rounded-xl overflow-hidden">
+      <div className="grid grid-cols-1 border border-slate-800 rounded-xl overflow-hidden shadow-lg mt-8">
         <div className="bg-slate-900 border-b border-slate-800 p-4 flex items-center">
           <Newspaper className="w-5 h-5 mr-2 text-indigo-400" />
-          <h2 className="text-lg font-semibold text-slate-200">Terminal de Noticias Globales IA - LATAM</h2>
+          <h2 className="text-lg font-semibold text-slate-200 tracking-wide">AI Regulatory & Innovation News Terminal</h2>
         </div>
         <div className="bg-slate-950 p-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
