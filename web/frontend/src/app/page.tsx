@@ -113,25 +113,46 @@ export default function Home() {
               <Card key={idx} className="bg-slate-900/30 border-slate-800">
                 <CardHeader>
                   <CardTitle className="flex justify-between items-center text-lg">
-                    <span>{node.ip}</span>
+                    <div className="flex flex-col">
+                      <span>{node.ip}</span>
+                      {node.host && node.host !== targetDomain && (
+                        <span className="text-xs text-slate-500 font-normal mt-1">{node.host}</span>
+                      )}
+                    </div>
                     <Badge variant={node.is_foreign ? 'destructive' : 'default'} className={node.is_foreign ? 'bg-rose-500/10 text-rose-400 hover:bg-rose-500/20' : 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'}>
                       {node.is_foreign ? 'Extranjero' : 'Nacional/Local'}
                     </Badge>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-2">
+                <CardContent className="space-y-3">
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-500">Proveedor (ISP):</span>
                     <span className="text-slate-200">{node.isp}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-500">País:</span>
-                    <span className="text-slate-200">{node.country}</span>
+                    <span className="text-slate-200 flex items-center">
+                      {node.country}
+                      {node.country === 'United States' && <span className="ml-2 text-lg" title="EE.UU.">🇺🇸</span>}
+                      {node.country === 'Mexico' && <span className="ml-2 text-lg" title="México">🇲🇽</span>}
+                    </span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-500">ASN:</span>
                     <span className="text-slate-200">{node.asn}</span>
                   </div>
+                  {node.open_ports && node.open_ports.length > 0 && (
+                    <div className="flex justify-between text-sm pt-2 border-t border-slate-800/50">
+                      <span className="text-slate-500">Puertos Abiertos:</span>
+                      <div className="flex gap-1">
+                        {node.open_ports.map((port: number) => (
+                          <Badge key={port} variant="outline" className="text-xs bg-slate-950 border-slate-700">
+                            {port}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
