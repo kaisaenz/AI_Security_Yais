@@ -142,6 +142,69 @@ const policyData = [
       { date: "2023-09-12", event: "El INAI publica recomendaciones de privacidad para desarrolladores de IA." },
       { date: "2023-04-10", event: "Coaliciones privadas lanzan el manifiesto IA2030Mx pidiendo regulación estatal." }
     ]
+  },
+  {
+    id: "UY",
+    country: "Uruguay",
+    status: "Avanzado",
+    framework: "Estrategia de IA para el Gobierno Digital",
+    lastUpdated: "18 Ago 2023",
+    lat: -32.522, lng: -55.765,
+    aiOverview: "Uruguay es pionero en gobierno digital (AGESIC) y ha implementado IA en la administración pública con un enfoque fuerte en datos abiertos y ética desde el diseño.",
+    marketData: { adoption: "Media-Alta (50%)", investment: "$90M USD (2023)", institutions: ["AGESIC", "UdelaR"] },
+    dimensions: {
+      privacy: { status: "Fuerte", desc: "Ley de Protección de Datos moderna, alineada con estándares europeos." },
+      transparency: { status: "Alta", desc: "El Estado publica auditorías algorítmicas de sus propios sistemas." },
+      liability: { status: "Moderada", desc: "Enfoque precautorio para sistemas del estado." },
+      generative: { status: "Básica", desc: "Guías de uso de IA generativa para funcionarios públicos." },
+      body: { status: "Establecido", desc: "AGESIC coordina y supervisa el despliegue." }
+    },
+    changelog: [
+      { date: "2023-08-18", event: "Publicación de guía sobre el uso de IA Generativa en el Estado." },
+      { date: "2022-10-05", event: "Aprobación de la Estrategia de IA para el Gobierno." }
+    ]
+  },
+  {
+    id: "CR",
+    country: "Costa Rica",
+    status: "Intermedio",
+    framework: "Estrategia Nacional de Inteligencia Artificial (Propuesta)",
+    lastUpdated: "12 Dic 2023",
+    lat: 9.748, lng: -83.753,
+    aiOverview: "Costa Rica lidera en Centroamérica con un fuerte enfoque en sostenibilidad e innovación tecnológica, apoyado por su ecosistema de zonas francas tecnológicas.",
+    marketData: { adoption: "Media (35%)", investment: "$65M USD (2023)", institutions: ["MICITT", "CENAT"] },
+    dimensions: {
+      privacy: { status: "Fuerte", desc: "Ley de Protección de la Persona frente al Tratamiento de sus Datos." },
+      transparency: { status: "Moderada", desc: "Principios de gobernanza digital aplicables a la IA." },
+      liability: { status: "Básica", desc: "Marco civil aplicable por defecto." },
+      generative: { status: "Nula", desc: "No regulada explícitamente." },
+      body: { status: "Propuesto", desc: "MICITT lidera los esfuerzos interinstitucionales." }
+    },
+    changelog: [
+      { date: "2023-12-12", event: "Borrador de la Estrategia Nacional sometido a consulta pública." },
+      { date: "2023-05-20", event: "Apertura del hub de innovación tecnológica con enfoque en IA verde." }
+    ]
+  },
+  {
+    id: "EC",
+    country: "Ecuador",
+    status: "Inicial",
+    framework: "Ley Orgánica de Protección de Datos Personales (Aplicable a IA)",
+    lastUpdated: "10 Ene 2024",
+    lat: -1.831, lng: -78.183,
+    aiOverview: "Ecuador recién está dando los primeros pasos institucionales hacia la regulación de IA, apalancándose en su reciente y moderna ley de protección de datos.",
+    marketData: { adoption: "Baja (18%)", investment: "$25M USD (2023)", institutions: ["MINTEL"] },
+    dimensions: {
+      privacy: { status: "Fuerte", desc: "Nueva ley exige consentimiento explícito y regula toma de decisiones automatizada." },
+      transparency: { status: "Moderada", desc: "Derecho del ciudadano a no ser sujeto a decisiones basadas única y exclusivamente en automatización." },
+      liability: { status: "Nula", desc: "Falta de claridad normativa." },
+      generative: { status: "Nula", desc: "No hay iniciativas." },
+      body: { status: "Inexistente", desc: "Se propone a la Superintendencia de Protección de Datos como ente veedor." }
+    },
+    changelog: [
+      { date: "2024-01-10", event: "Expertos solicitan ante asamblea un observatorio de impacto de IA." },
+      { date: "2023-05-26", event: "Entrada en vigor total del régimen sancionatorio de la Ley de Datos Personales." }
+    ]
   }
 ];
 
